@@ -1,22 +1,14 @@
 'use strict'
 
-const Book = use('App/Models/Book')
+const User = use("App/Models/User")
 
 class UserController {
-    async index ({auth, request}) {
-        const user = auth.getUser()
-        user.getRelated('tokens')
-        
-        return Book.all()
-    }
+  async store ({ request }) {
+    const data = request.only(["nome", "email", "password"])
+    const user = await User.create(data)
 
-    async update({params, request, auth, response}) {
-        const book = await Book.findOrFail(params.id)
-        const data = request.only(['title', 'author'])
-
-        book.merge(data)
-        return await book.save()
-    }
+    return user
+  }
 
 }
 
